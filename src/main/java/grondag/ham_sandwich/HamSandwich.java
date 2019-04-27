@@ -16,25 +16,10 @@
 
 package grondag.ham_sandwich;
 
-import java.util.function.Function;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-public class SmartChest implements ModInitializer {
+public class HamSandwich {
     public static final Logger LOG = LogManager.getLogger("HamSandwich");
     public static final String MODID = "ham_sandwich";
 }
