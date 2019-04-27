@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "ham_sandwich",
+  "version": "${version}",
+  "name": "Ham Sandwich v1",
+  "description": "Connected block library for use by other mods",
+  "authors": [
+    "Grondag"
+  ],
+  "contact": {
+    "homepage": "https://github.com/grondag/ham_sandwich",
+    "sources": "https://github.com/grondag/ham_sandwich"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/ham_sandwich/ham_sandwich_icon.png",
+  
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+    ]
+  },
+  
+  "mixins": [
+  ],
+  
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  },
+  "custom": {
+    "modmenu:api": true,
+    "modmenu:clientsideOnly": false
+  }
+}
