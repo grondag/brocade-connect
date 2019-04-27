@@ -14,12 +14,12 @@
  * the License.
  ******************************************************************************/
 
-package grondag.ham_sandwich;
+package grondag.brocade.connect;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class HamSandwich {
-    public static final Logger LOG = LogManager.getLogger("HamSandwich");
-    public static final String MODID = "ham_sandwich";
+public class BrocadeConnect {
+    public static final Logger LOG = LogManager.getLogger("Brocade-Connect");
+    public static final String MODID = "brocade-connect";
 }

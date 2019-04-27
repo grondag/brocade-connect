@@ -74,12 +74,10 @@ dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
 	mappings "net.fabricmc:yarn:$mcVersion+build.1"
 	modCompile "net.fabricmc:fabric-loader:0.4.2+build.132"
-	modCompile "net.fabricmc:fabric:0.2.7+build.127"
+	//modCompile "net.fabricmc:fabric:0.2.7+build.127"
 	
-	//compile "org.apiguardian:apiguardian-api:1.0.0"
+	compile "org.apiguardian:apiguardian-api:1.0.0"
 	compile "com.google.code.findbugs:jsr305:3.0.2"
-	
-	modCompile "io.github.prospector.modmenu:ModMenu:1.4.0-71"
 }
 
 publishing {
