@@ -3,12 +3,18 @@ package grondag.brocade.connect.api.model;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
+import java.util.function.Consumer;
+
 import org.apiguardian.api.API;
+
+import grondag.brocade.connect.impl.helper.FaceCornerHelper;
 
 @API(status = STABLE)
 public enum FaceCorner {
-    TOP_LEFT(FaceEdge.LEFT, FaceEdge.TOP), TOP_RIGHT(FaceEdge.TOP, FaceEdge.RIGHT),
-    BOTTOM_LEFT(FaceEdge.BOTTOM, FaceEdge.LEFT), BOTTOM_RIGHT(FaceEdge.RIGHT, FaceEdge.BOTTOM);
+    TOP_LEFT(FaceEdge.LEFT_EDGE, FaceEdge.TOP_EDGE),
+    TOP_RIGHT(FaceEdge.TOP_EDGE, FaceEdge.RIGHT_EDGE),
+    BOTTOM_LEFT(FaceEdge.BOTTOM_EDGE, FaceEdge.LEFT_EDGE),
+    BOTTOM_RIGHT(FaceEdge.RIGHT_EDGE, FaceEdge.BOTTOM_EDGE);
 
     /**
      * Side that is counterclockwise from the corner.
@@ -29,16 +35,17 @@ public enum FaceCorner {
         this.ordinalBit = 1 << this.ordinal();
     }
 
-    private static FaceCorner[][] LOOKUP = new FaceCorner[4][4];
-
-    static {
-        for (FaceCorner corner : FaceCorner.values()) {
-            LOOKUP[corner.leftSide.ordinal()][corner.rightSide.ordinal()] = corner;
-            LOOKUP[corner.rightSide.ordinal()][corner.leftSide.ordinal()] = corner;
-        }
-    }
+    public static final int COUNT = FaceCornerHelper.COUNT;
     
     public static FaceCorner find(FaceEdge side1, FaceEdge side2) {
-        return LOOKUP[side1.ordinal()][side2.ordinal()];
+        return FaceCornerHelper.find(side1, side2);
+    }
+    
+    public static final FaceCorner fromOrdinal(int ordinal) {
+        return FaceCornerHelper.fromOrdinal(ordinal);
+    }
+    
+    public static void forEach(Consumer<FaceCorner> consumer) {
+        FaceCornerHelper.forEach(consumer);
     }
 }

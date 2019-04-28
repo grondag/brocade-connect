@@ -1,24 +1,24 @@
 package grondag.brocade.connect.api.state;
 
-import grondag.brocade.connect.api.block.BlockNeighbors;
-import grondag.brocade.connect.impl.SimpleJoin;
+import grondag.brocade.connect.api.world.BlockNeighbors;
+import grondag.brocade.connect.impl.SimpleJoinStateImpl;
 import net.minecraft.util.math.Direction;
 
 public interface SimpleJoinState {
 
     boolean isJoined(Direction face);
 
-    int getIndex();
+    int ordinal();
 
-    public static SimpleJoinState get(int index) {
-        return SimpleJoin.get(index);
+    public static SimpleJoinState fromOrdinal(int ordinal) {
+        return SimpleJoinStateImpl.fromOrdinal(ordinal);
     }
     
-    public static SimpleJoinState get(BlockNeighbors testResults) {
-        return SimpleJoin.get(testResults);
+    public static SimpleJoinState fromWorld(BlockNeighbors neighbors) {
+        return SimpleJoinStateImpl.fromWorld(neighbors);
     }
     
-    public static int getIndex(BlockNeighbors testResults) {
-        return SimpleJoin.getIndex(testResults);
+    public static int ordinalFromWorld(BlockNeighbors neighbors) {
+        return SimpleJoinStateImpl.ordinalFromWorld(neighbors);
     }
 }

@@ -1,13 +1,12 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.block.BlockTest;
-import grondag.brocade.connect.api.block.ModelStateFunction;
-
 import java.util.concurrent.ArrayBlockingQueue;
 
-import grondag.brocade.connect.api.block.BlockNeighbors;
+import grondag.brocade.connect.api.model.BlockEdge;
+import grondag.brocade.connect.api.world.BlockNeighbors;
+import grondag.brocade.connect.api.world.BlockTest;
+import grondag.brocade.connect.api.world.ModelStateFunction;
 import grondag.brocade.connect.api.model.BlockCorner;
-import grondag.brocade.connect.api.model.FarCorner;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -122,10 +121,10 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public BlockState blockState(BlockCorner corner) {
+    public BlockState blockState(BlockEdge corner) {
         BlockState result = blockStates[corner.superOrdinal];
         if (result == null) {
-            final Vec3i vec = corner.directionVector;
+            final Vec3i vec = corner.vector;
             result = world.getBlockState(mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ()));
             blockStates[corner.superOrdinal] = result;
         }
@@ -133,10 +132,10 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public BlockState blockState(FarCorner corner) {
+    public BlockState blockState(BlockCorner corner) {
         BlockState result = blockStates[corner.superOrdinal];
         if (result == null) {
-            final Vec3i vec = corner.directionVector;
+            final Vec3i vec = corner.vector;
             result = world.getBlockState(mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ()));
             blockStates[corner.superOrdinal] = result;
         }
@@ -179,14 +178,14 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public Object modelState(BlockCorner corner) {
+    public Object modelState(BlockEdge corner) {
         if(this.stateFunc == null) 
             return null;
         
         Object result = modelStates[corner.superOrdinal];
         if (result == null) {
             BlockState state = blockState(corner);
-            final Vec3i vec = corner.directionVector;
+            final Vec3i vec = corner.vector;
             mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ());
             result = this.stateFunc.get(this.world, state, mutablePos);
             modelStates[corner.superOrdinal] = result;
@@ -195,14 +194,14 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public Object modelState(FarCorner corner) {
+    public Object modelState(BlockCorner corner) {
         if(this.stateFunc == null) 
             return null;
         
         Object result = modelStates[corner.superOrdinal];
         if (result == null) {
             BlockState state = blockState(corner);
-            final Vec3i vec = corner.directionVector;
+            final Vec3i vec = corner.vector;
             mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ());
             result = this.stateFunc.get(this.world, state, mutablePos);
             modelStates[corner.superOrdinal] = result;
@@ -222,7 +221,7 @@ public class NeighborBlocksImpl implements BlockNeighbors {
         }
     }
 
-    private boolean doTest(BlockCorner corner) {
+    private boolean doTest(BlockEdge corner) {
         if (stateFunc == null) {
             return this.blockTest.apply(this.blockState(), null, blockState(corner), null);
         } else {
@@ -230,7 +229,7 @@ public class NeighborBlocksImpl implements BlockNeighbors {
         }
     }
 
-    private boolean doTest(FarCorner corner) {
+    private boolean doTest(BlockCorner corner) {
         if (stateFunc == null) {
             return this.blockTest.apply(this.blockState(), null, blockState(corner), null);
         } else {
@@ -262,24 +261,24 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public boolean result(BlockCorner corner) {
-        if ((completionFlags & corner.ordinalBit) != corner.ordinalBit) {
+    public boolean result(BlockEdge corner) {
+        if ((completionFlags & corner.superOrdinalBit) != corner.superOrdinalBit) {
             if (doTest(corner)) {
-                resultFlags |= corner.ordinalBit;
+                resultFlags |= corner.superOrdinalBit;
             }
-            completionFlags |= corner.ordinalBit;
+            completionFlags |= corner.superOrdinalBit;
         }
-        return (resultFlags & corner.ordinalBit) == corner.ordinalBit;
+        return (resultFlags & corner.superOrdinalBit) == corner.superOrdinalBit;
     }
 
     @Override
-    public boolean result(FarCorner corner) {
-        if ((completionFlags & corner.bitFlag) != corner.bitFlag) {
+    public boolean result(BlockCorner corner) {
+        if ((completionFlags & corner.superOrdinalBit) != corner.superOrdinalBit) {
             if (doTest(corner)) {
-                resultFlags |= corner.bitFlag;
+                resultFlags |= corner.superOrdinalBit;
             }
-            completionFlags |= corner.bitFlag;
+            completionFlags |= corner.superOrdinalBit;
         }
-        return (resultFlags & corner.bitFlag) == corner.bitFlag;
+        return (resultFlags & corner.superOrdinalBit) == corner.superOrdinalBit;
     }
 }

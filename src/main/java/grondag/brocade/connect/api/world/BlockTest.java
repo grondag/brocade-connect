@@ -1,4 +1,4 @@
-package grondag.brocade.connect.api.block;
+package grondag.brocade.connect.api.world;
 
 import javax.annotation.Nullable;
 

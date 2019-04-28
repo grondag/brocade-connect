@@ -1,11 +1,11 @@
 package grondag.brocade.connect.api.state;
 
+import java.util.function.Consumer;
+
 import grondag.brocade.connect.impl.CornerJoinFaceStateImpl;
 
 public abstract class CornerJoinFaceStates {
     private CornerJoinFaceStates() {};
-    
-    public static final int COUNT = CornerJoinFaceStateImpl.values().length;
     
     public static final CornerJoinFaceState NO_FACE = CornerJoinFaceStateImpl.NO_FACE;
     public static final CornerJoinFaceState NONE = CornerJoinFaceStateImpl.NONE;
@@ -64,4 +64,14 @@ public abstract class CornerJoinFaceStates {
     public static final CornerJoinFaceState ALL_TL_BL_BR = CornerJoinFaceStateImpl.ALL_TL_BL_BR;
     public static final CornerJoinFaceState ALL_TR_BL_BR = CornerJoinFaceStateImpl.ALL_TR_BL_BR;
     public static final CornerJoinFaceState ALL_TL_TR_BL_BR = CornerJoinFaceStateImpl.ALL_TL_TR_BL_BR;
+    
+    public static final int COUNT = CornerJoinFaceStateImpl.COUNT;
+
+    public static final CornerJoinFaceState fromOrdinal(int ordinal) {
+        return CornerJoinFaceStateImpl.fromOrdinal(ordinal);
+    }
+    
+    public static void forEach(Consumer<CornerJoinFaceState> consumer) {
+        CornerJoinFaceStateImpl.forEach(consumer);
+    }
 }

@@ -1,7 +1,7 @@
-package grondag.brocade.connect.api.block;
+package grondag.brocade.connect.api.world;
 
+import grondag.brocade.connect.api.model.BlockEdge;
 import grondag.brocade.connect.api.model.BlockCorner;
-import grondag.brocade.connect.api.model.FarCorner;
 import grondag.brocade.connect.api.model.HorizontalCorner;
 import grondag.brocade.connect.api.model.HorizontalFace;
 import grondag.brocade.connect.impl.NeighborBlocksImpl;
@@ -19,16 +19,16 @@ public interface BlockNeighbors {
     
     BlockState blockState(Direction face);
 
-    BlockState blockState(BlockCorner corner);
+    BlockState blockState(BlockEdge corner);
 
-    BlockState blockState(FarCorner corner);
+    BlockState blockState(BlockCorner corner);
     
     default BlockState blockState(HorizontalFace face) {
         return blockState(face.face);
     }
 
     default BlockState blockState(Direction face1, Direction face2) {
-        return blockState(BlockCorner.find(face1, face2));
+        return blockState(BlockEdge.find(face1, face2));
     }
 
     default BlockState blockState(HorizontalCorner corner) {
@@ -36,19 +36,19 @@ public interface BlockNeighbors {
     }
     
     default BlockState blockState(Direction face1, Direction face2, Direction face3) {
-        return blockState(FarCorner.find(face1, face2, face3));
+        return blockState(BlockCorner.find(face1, face2, face3));
     }
 
     Object modelState();
     
     Object modelState(Direction face);
 
+    Object modelState(BlockEdge corner);
+
     Object modelState(BlockCorner corner);
 
-    Object modelState(FarCorner corner);
-
     default Object modelState(Direction face1, Direction face2, Direction face3) {
-        return modelState(FarCorner.find(face1, face2, face3));
+        return modelState(BlockCorner.find(face1, face2, face3));
     }
 
     default Object modelState(HorizontalFace face) {
@@ -56,7 +56,7 @@ public interface BlockNeighbors {
     }
 
     default Object modelState(Direction face1, Direction face2) {
-        return modelState(BlockCorner.find(face1, face2));
+        return modelState(BlockEdge.find(face1, face2));
     }
 
     default Object modelState(HorizontalCorner corner) {
@@ -68,12 +68,12 @@ public interface BlockNeighbors {
     
     boolean result(Direction face);
 
-    boolean result(BlockCorner corner);
+    boolean result(BlockEdge corner);
 
-    boolean result(FarCorner corner);
+    boolean result(BlockCorner corner);
     
     public default boolean result(Direction face1, Direction face2) {
-        return result(BlockCorner.find(face1, face2));
+        return result(BlockEdge.find(face1, face2));
     }
     
     public default boolean result(HorizontalFace face) {
@@ -85,7 +85,7 @@ public interface BlockNeighbors {
     }
 
     public default boolean result(Direction face1, Direction face2, Direction face3) {
-        return result(FarCorner.find(face1, face2, face3));
+        return result(BlockCorner.find(face1, face2, face3));
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest test) {

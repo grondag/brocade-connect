@@ -1,20 +1,20 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.block.BlockNeighbors;
+import grondag.brocade.connect.api.world.BlockNeighbors;
 import net.minecraft.util.math.Direction;
 
-public class CornerJoinBlockStateSelector {
+public class CornerJoinStateSelector {
     private static final Direction[] FACES = Direction.values();
     public static final int BLOCK_JOIN_STATE_COUNT = 20115;
-    private static final CornerJoinBlockStateImpl BLOCK_JOIN_STATES[] = new CornerJoinBlockStateImpl[BLOCK_JOIN_STATE_COUNT];
-    private static final CornerJoinBlockStateSelector BLOCK_JOIN_SELECTOR[] = new CornerJoinBlockStateSelector[64];
+    private static final CornerJoinStateImpl BLOCK_JOIN_STATES[] = new CornerJoinStateImpl[BLOCK_JOIN_STATE_COUNT];
+    private static final CornerJoinStateSelector BLOCK_JOIN_SELECTOR[] = new CornerJoinStateSelector[64];
 
     static {
         int firstIndex = 0;
 
         for (int i = 0; i < 64; i++) {
-            SimpleJoin baseJoin = SimpleJoin.get(i);
-            BLOCK_JOIN_SELECTOR[i] = new CornerJoinBlockStateSelector(baseJoin, firstIndex);
+            SimpleJoinStateImpl baseJoin = SimpleJoinStateImpl.fromOrdinal(i);
+            BLOCK_JOIN_SELECTOR[i] = new CornerJoinStateSelector(baseJoin, firstIndex);
 
             for (int j = 0; j < BLOCK_JOIN_SELECTOR[i].stateCount(); j++) {
                 BLOCK_JOIN_STATES[firstIndex + j] = BLOCK_JOIN_SELECTOR[i].createChildState(firstIndex + j);
@@ -24,26 +24,26 @@ public class CornerJoinBlockStateSelector {
         }
     }
 
-    public static int indexOf(BlockNeighbors tests) {
-        SimpleJoin baseJoin = SimpleJoin.get(tests);
-        return BLOCK_JOIN_SELECTOR[baseJoin.getIndex()].indexFromNeighbors(tests);
+    public static int ordinalFromWorld(BlockNeighbors tests) {
+        SimpleJoinStateImpl baseJoin = SimpleJoinStateImpl.fromWorld(tests);
+        return BLOCK_JOIN_SELECTOR[baseJoin.ordinal()].indexFromNeighbors(tests);
     }
 
-    public static CornerJoinBlockStateImpl get(BlockNeighbors tests) {
-        return get(indexOf(tests));
+    public static CornerJoinStateImpl fromWorld(BlockNeighbors tests) {
+        return fromOrdinal(ordinalFromWorld(tests));
     }
     
-    public static CornerJoinBlockStateImpl get(int index) {
+    public static CornerJoinStateImpl fromOrdinal(int index) {
         return BLOCK_JOIN_STATES[index];
     }
 
 
     private final int firstIndex;
-    private final SimpleJoin simpleJoin;
+    private final SimpleJoinStateImpl simpleJoin;
 
     private CornerJoinFaceSelector faceSelector[] = new CornerJoinFaceSelector[6];
 
-    private CornerJoinBlockStateSelector(SimpleJoin baseJoinState, int firstIndex) {
+    private CornerJoinStateSelector(SimpleJoinStateImpl baseJoinState, int firstIndex) {
         this.firstIndex = firstIndex;
         this.simpleJoin = baseJoinState;
         for (int i = 0; i < 6; i++) {
@@ -51,7 +51,7 @@ public class CornerJoinBlockStateSelector {
         }
     }
 
-    private CornerJoinBlockStateImpl createChildState(int index) {
+    private CornerJoinStateImpl createChildState(int index) {
         int shift = 1;
         int localIndex = index - firstIndex;
         byte[] faceJoinIndex = new byte[6];
@@ -67,7 +67,7 @@ public class CornerJoinBlockStateSelector {
             }
         }
 
-        return new CornerJoinBlockStateImpl(index, simpleJoin, faceJoinIndex);
+        return new CornerJoinStateImpl(index, simpleJoin, faceJoinIndex);
     }
     
     private int stateCount() {

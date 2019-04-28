@@ -2,8 +2,11 @@ package grondag.brocade.connect.api.model;
 
 import static org.apiguardian.api.API.Status.STABLE;
 
+import java.util.function.Consumer;
+
 import org.apiguardian.api.API;
 
+import grondag.brocade.connect.impl.helper.HorizontalFaceHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
@@ -16,11 +19,11 @@ public enum HorizontalFace {
 
     public final Direction face;
 
-    public final Vec3i directionVector;
+    public final Vec3i vector;
 
     private HorizontalFace(Direction face) {
         this.face = face;
-        this.directionVector = face.getVector();
+        this.vector = face.getVector();
     }
 
     public HorizontalFace left() {
@@ -39,21 +42,17 @@ public enum HorizontalFace {
         }
     }
     
-    public static HorizontalFace find(Direction face) {
-        return HorizontalFace.HORIZONTAL_FACE_LOOKUP[face.ordinal()];
-    }
-    
-    private static final HorizontalFace[] VALUES = HorizontalFace.values();
-    public static final int COUNT = VALUES.length;
-    public static final HorizontalFace fromOrdinal(int ordinal) {
-        return VALUES[ordinal];
-    }
-    
-    private static final HorizontalFace HORIZONTAL_FACE_LOOKUP[] = new HorizontalFace[6];
+    public static final int COUNT = HorizontalFaceHelper.COUNT;
 
-    static {
-        for (HorizontalFace hFace : HorizontalFace.values()) {
-            HORIZONTAL_FACE_LOOKUP[hFace.face.ordinal()] = hFace;
-        }
+    public static HorizontalFace find(Direction face) {
+        return HorizontalFaceHelper.find(face);
+    }
+    
+    public static final HorizontalFace fromOrdinal(int ordinal) {
+        return HorizontalFaceHelper.fromOrdinal(ordinal);
+    }
+    
+    public static void forEach(Consumer<HorizontalFace> consumer) {
+        HorizontalFaceHelper.forEach(consumer);
     }
 }
