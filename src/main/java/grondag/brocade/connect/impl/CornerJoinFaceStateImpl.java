@@ -1,7 +1,27 @@
+/*******************************************************************************
+ * Copyright 2019 grondag
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
+
 package grondag.brocade.connect.impl;
+
+import static org.apiguardian.api.API.Status.INTERNAL;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
+
+import org.apiguardian.api.API;
 
 import grondag.brocade.connect.api.model.BlockEdge;
 import grondag.brocade.connect.api.model.FaceCorner;
@@ -14,6 +34,7 @@ import net.minecraft.util.math.Direction;
  * Corner bits indicate that a corner is needed, not that the corner is present.
  * (These are normally inverse.)
  */
+@API(status = INTERNAL)
 public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
     NO_FACE(0, 0), 
     NONE(0, 0), // must be after NO_FACE, overwrites NO_FACE in lookup table, should never be

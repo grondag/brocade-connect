@@ -1,11 +1,33 @@
+/*******************************************************************************
+ * Copyright 2019 grondag
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
+
 package grondag.brocade.connect.api.model;
 
+import static org.apiguardian.api.API.Status.INTERNAL;
+import static org.apiguardian.api.API.Status.STABLE;
+
 import java.util.function.Consumer;
+
+import org.apiguardian.api.API;
 
 import grondag.brocade.connect.impl.helper.BlockCornerHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+@API(status = STABLE)
 public enum BlockCorner {
     UP_NORTH_EAST(Direction.UP, Direction.EAST, Direction.NORTH),
     UP_NORTH_WEST(Direction.UP, Direction.WEST, Direction.NORTH),
@@ -25,7 +47,9 @@ public enum BlockCorner {
      * Ordinal sequence that includes all faces, corner and far corners. Use to
      * index them in a mixed array.
      */
+    @API(status = INTERNAL)
     public final int superOrdinal;
+    @API(status = INTERNAL)
     public final int superOrdinalBit;
     
     private BlockCorner(Direction face1, Direction face2, Direction face3) {
