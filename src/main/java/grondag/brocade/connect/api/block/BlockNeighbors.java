@@ -93,19 +93,19 @@ public interface BlockNeighbors {
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc) {
-        return NeighborBlocksImpl.threadLocal(world, x, y, z, stateFunc, null);
+        return threadLocal(world, x, y, z, stateFunc, null);
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, BlockTest test) {
-        return NeighborBlocksImpl.threadLocal(world, x, y, z, null, test);
+        return threadLocal(world, x, y, z, null, test);
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z) {
-        return NeighborBlocksImpl.threadLocal(world, x, y, z, null, null);
+        return threadLocal(world, x, y, z, null, null);
     }
     
     public static BlockNeighbors threadLocal(BlockView world, BlockPos pos, ModelStateFunction stateFunc, BlockTest test) {
-        return NeighborBlocksImpl.threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), stateFunc, test);
+        return threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), stateFunc, test);
     }
     
     public static BlockNeighbors threadLocal(BlockView world, BlockPos pos, ModelStateFunction stateFunc) {
