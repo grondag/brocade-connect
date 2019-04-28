@@ -6,6 +6,8 @@ import net.minecraft.util.math.Direction;
 
 public interface CornerJoinFaceState {
 
+    int ordinal();
+    
     boolean isJoined(FaceSide side);
 
     boolean isJoined(Direction toFace, Direction onFace);

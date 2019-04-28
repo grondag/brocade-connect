@@ -4,14 +4,54 @@ import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.FarCorner;
 import grondag.brocade.connect.api.model.HorizontalCorner;
 import grondag.brocade.connect.api.model.HorizontalFace;
+import grondag.brocade.connect.impl.NeighborBlocksImpl;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 
 public interface NeighborBlocks {
-
+    
+    public static NeighborBlocks threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest test) {
+        return NeighborBlocksImpl.threadLocal(world, x, y, z, stateFunc, test);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc) {
+        return NeighborBlocksImpl.threadLocal(world, x, y, z, stateFunc, null);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, int x, int y, int z, BlockTest test) {
+        return NeighborBlocksImpl.threadLocal(world, x, y, z, null, test);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, int x, int y, int z) {
+        return NeighborBlocksImpl.threadLocal(world, x, y, z, null, null);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, BlockPos pos, ModelStateFunction stateFunc, BlockTest test) {
+        return NeighborBlocksImpl.threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), stateFunc, test);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, BlockPos pos, ModelStateFunction stateFunc) {
+        return NeighborBlocksImpl.threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), stateFunc, null);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, BlockPos pos, BlockTest test) {
+        return NeighborBlocksImpl.threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), null, test);
+    }
+    
+    public static NeighborBlocks threadLocal(BlockView world, BlockPos pos) {
+        return NeighborBlocksImpl.threadLocal(world, pos.getX(), pos.getY(), pos.getZ(), null, null);
+    }
+    
+    NeighborBlocks test(BlockTest blockTest);
+    
     //////////////////////////////
     // BLOCK STATE
     //////////////////////////////
+    
+    BlockState getBlockState();
+    
     BlockState getBlockState(Direction face);
 
     BlockState getBlockState(HorizontalFace face);
@@ -34,6 +74,8 @@ public interface NeighborBlocks {
 
     BlockState getBlockState(FarCorner corner);
 
+    Object getModelState();
+    
     Object getModelState(Direction face);
 
     Object getModelState(HorizontalFace face);

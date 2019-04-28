@@ -7,7 +7,7 @@ public class CornerJoinBlockStateSelector {
     // STATIC MEMBERS START
     private static final Direction[] FACES = Direction.values();
     public static final int BLOCK_JOIN_STATE_COUNT = 20115;
-    private static final CornerJoinBlockState BLOCK_JOIN_STATES[] = new CornerJoinBlockState[BLOCK_JOIN_STATE_COUNT];
+    private static final CornerJoinBlockStateImpl BLOCK_JOIN_STATES[] = new CornerJoinBlockStateImpl[BLOCK_JOIN_STATE_COUNT];
     private static final CornerJoinBlockStateSelector BLOCK_JOIN_SELECTOR[] = new CornerJoinBlockStateSelector[64];
 
     static {
@@ -30,11 +30,11 @@ public class CornerJoinBlockStateSelector {
         return BLOCK_JOIN_SELECTOR[baseJoin.getIndex()].getIndexFromNeighbors(tests);
     }
 
-    public static CornerJoinBlockState get(NeighborBlocks tests) {
+    public static CornerJoinBlockStateImpl get(NeighborBlocks tests) {
         return get(getIndex(tests));
     }
     
-    public static CornerJoinBlockState get(int index) {
+    public static CornerJoinBlockStateImpl get(int index) {
         return BLOCK_JOIN_STATES[index];
     }
 
@@ -73,11 +73,11 @@ public class CornerJoinBlockStateSelector {
         return index + firstIndex;
     }
 
-    private CornerJoinBlockState getJoinFromIndex(int index) {
+    private CornerJoinBlockStateImpl getJoinFromIndex(int index) {
         int shift = 1;
         int localIndex = index - firstIndex;
 
-        CornerJoinBlockState retVal = new CornerJoinBlockState(index, simpleJoin);
+        CornerJoinBlockStateImpl retVal = new CornerJoinBlockStateImpl(index, simpleJoin);
 
         for (int i = 0; i < 6; i++) {
             final Direction face = FACES[i];

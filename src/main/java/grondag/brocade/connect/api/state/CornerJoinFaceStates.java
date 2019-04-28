@@ -5,6 +5,8 @@ import grondag.brocade.connect.impl.CornerJoinFaceStateImpl;
 public abstract class CornerJoinFaceStates {
     private CornerJoinFaceStates() {};
     
+    public static final int COUNT = CornerJoinFaceStateImpl.values().length;
+    
     public static final CornerJoinFaceState NO_FACE = CornerJoinFaceStateImpl.NO_FACE;
     public static final CornerJoinFaceState NONE = CornerJoinFaceStateImpl.NONE;
     

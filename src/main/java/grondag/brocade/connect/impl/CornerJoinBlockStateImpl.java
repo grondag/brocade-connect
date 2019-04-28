@@ -1,9 +1,9 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.state.CornerJoinState;
+import grondag.brocade.connect.api.state.CornerJoinBlockState;
 import net.minecraft.util.math.Direction;
 
-public class CornerJoinBlockState implements CornerJoinState {
+public class CornerJoinBlockStateImpl implements CornerJoinBlockState {
     private final int index;
 
     /** join state considering only direct neighbors */
@@ -11,7 +11,7 @@ public class CornerJoinBlockState implements CornerJoinState {
 
     private byte faceJoinIndex[] = new byte[6];
 
-    CornerJoinBlockState(int index, SimpleJoin simpleJoin) {
+    CornerJoinBlockStateImpl(int index, SimpleJoin simpleJoin) {
         this.index = index;
         this.simpleJoin = simpleJoin;
     }

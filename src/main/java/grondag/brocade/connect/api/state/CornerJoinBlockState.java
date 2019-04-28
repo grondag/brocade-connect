@@ -4,7 +4,7 @@ import grondag.brocade.connect.api.block.NeighborBlocks;
 import grondag.brocade.connect.impl.CornerJoinBlockStateSelector;
 import net.minecraft.util.math.Direction;
 
-public interface CornerJoinState {
+public interface CornerJoinBlockState {
     int index();
 
     CornerJoinFaceState getFaceJoinState(Direction face);
@@ -13,11 +13,11 @@ public interface CornerJoinState {
         return CornerJoinBlockStateSelector.getIndex(tests);
     }
 
-    public static CornerJoinState get(NeighborBlocks tests) {
+    public static CornerJoinBlockState get(NeighborBlocks tests) {
         return CornerJoinBlockStateSelector.get(tests);
     }
     
-    public static CornerJoinState get(int index) {
+    public static CornerJoinBlockState get(int index) {
         return CornerJoinBlockStateSelector.get(index);
     }
 }
