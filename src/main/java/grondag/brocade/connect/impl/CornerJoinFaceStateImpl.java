@@ -9,7 +9,7 @@ import org.apiguardian.api.API;
 import grondag.brocade.connect.api.block.BlockNeighbors;
 import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.FaceCorner;
-import grondag.brocade.connect.api.model.FaceSide;
+import grondag.brocade.connect.api.model.FaceEdge;
 import grondag.brocade.connect.api.state.CornerJoinFaceState;
 import net.minecraft.util.math.Direction;
 
@@ -21,93 +21,93 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
     NO_FACE(0, 0), 
     NONE(0, 0), // must be after NO_FACE, overwrites NO_FACE in lookup table, should never be
                                // checked by lookup
-    TOP(FaceSide.TOP.ordinalBit, 0), 
-    BOTTOM(FaceSide.BOTTOM.ordinalBit, 0), 
-    LEFT(FaceSide.LEFT.ordinalBit, 0),
-    RIGHT(FaceSide.RIGHT.ordinalBit, 0),
+    TOP(FaceEdge.TOP.ordinalBit, 0), 
+    BOTTOM(FaceEdge.BOTTOM.ordinalBit, 0), 
+    LEFT(FaceEdge.LEFT.ordinalBit, 0),
+    RIGHT(FaceEdge.RIGHT.ordinalBit, 0),
     
-    TOP_BOTTOM(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit, 0),
-    LEFT_RIGHT(FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit, 0),
+    TOP_BOTTOM(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit, 0),
+    LEFT_RIGHT(FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0),
 
-    TOP_BOTTOM_RIGHT_NO_CORNERS(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit, 0,
+    TOP_BOTTOM_RIGHT_NO_CORNERS(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0,
             FaceCorner.TOP_RIGHT, FaceCorner.BOTTOM_RIGHT),
-    TOP_BOTTOM_RIGHT_TR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_BOTTOM_RIGHT_TR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_RIGHT.ordinalBit),
-    TOP_BOTTOM_RIGHT_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_BOTTOM_RIGHT_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit),
-    TOP_BOTTOM_RIGHT_TR_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_BOTTOM_RIGHT_TR_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_RIGHT.ordinalBit | FaceCorner.BOTTOM_RIGHT.ordinalBit),
 
-    TOP_BOTTOM_LEFT_NO_CORNERS(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit, 0,
+    TOP_BOTTOM_LEFT_NO_CORNERS(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit, 0,
             FaceCorner.TOP_LEFT, FaceCorner.BOTTOM_LEFT),
-    TOP_BOTTOM_LEFT_TL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit,
+    TOP_BOTTOM_LEFT_TL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit,
             FaceCorner.TOP_LEFT.ordinalBit),
-    TOP_BOTTOM_LEFT_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit,
+    TOP_BOTTOM_LEFT_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit),
-    TOP_BOTTOM_LEFT_TL_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit,
+    TOP_BOTTOM_LEFT_TL_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit,
             FaceCorner.TOP_LEFT.ordinalBit | FaceCorner.BOTTOM_LEFT.ordinalBit),
 
-    TOP_LEFT_RIGHT_NO_CORNERS(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit, 0,
+    TOP_LEFT_RIGHT_NO_CORNERS(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0,
             FaceCorner.TOP_LEFT, FaceCorner.TOP_RIGHT),
-    TOP_LEFT_RIGHT_TL(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_LEFT_RIGHT_TL(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_LEFT.ordinalBit),
-    TOP_LEFT_RIGHT_TR(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_LEFT_RIGHT_TR(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_RIGHT.ordinalBit),
-    TOP_LEFT_RIGHT_TL_TR(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    TOP_LEFT_RIGHT_TL_TR(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_LEFT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit),
 
-    BOTTOM_LEFT_RIGHT_NO_CORNERS(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit, 0,
+    BOTTOM_LEFT_RIGHT_NO_CORNERS(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0,
             FaceCorner.BOTTOM_LEFT, FaceCorner.BOTTOM_RIGHT),
-    BOTTOM_LEFT_RIGHT_BL(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    BOTTOM_LEFT_RIGHT_BL(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit),
-    BOTTOM_LEFT_RIGHT_BR(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    BOTTOM_LEFT_RIGHT_BR(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit),
-    BOTTOM_LEFT_RIGHT_BL_BR(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    BOTTOM_LEFT_RIGHT_BL_BR(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.BOTTOM_RIGHT.ordinalBit),
 
-    TOP_LEFT_NO_CORNER(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit, 0, FaceCorner.TOP_LEFT),
-    TOP_LEFT_TL(FaceSide.TOP.ordinalBit | FaceSide.LEFT.ordinalBit, FaceCorner.TOP_LEFT.ordinalBit),
+    TOP_LEFT_NO_CORNER(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit, 0, FaceCorner.TOP_LEFT),
+    TOP_LEFT_TL(FaceEdge.TOP.ordinalBit | FaceEdge.LEFT.ordinalBit, FaceCorner.TOP_LEFT.ordinalBit),
 
-    TOP_RIGHT_NO_CORNER(FaceSide.TOP.ordinalBit | FaceSide.RIGHT.ordinalBit, 0, FaceCorner.TOP_RIGHT),
-    TOP_RIGHT_TR(FaceSide.TOP.ordinalBit | FaceSide.RIGHT.ordinalBit, FaceCorner.TOP_RIGHT.ordinalBit),
+    TOP_RIGHT_NO_CORNER(FaceEdge.TOP.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0, FaceCorner.TOP_RIGHT),
+    TOP_RIGHT_TR(FaceEdge.TOP.ordinalBit | FaceEdge.RIGHT.ordinalBit, FaceCorner.TOP_RIGHT.ordinalBit),
 
-    BOTTOM_LEFT_NO_CORNER(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit, 0, FaceCorner.BOTTOM_LEFT),
-    BOTTOM_LEFT_BL(FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit, FaceCorner.BOTTOM_LEFT.ordinalBit),
+    BOTTOM_LEFT_NO_CORNER(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit, 0, FaceCorner.BOTTOM_LEFT),
+    BOTTOM_LEFT_BL(FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit, FaceCorner.BOTTOM_LEFT.ordinalBit),
 
-    BOTTOM_RIGHT_NO_CORNER(FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit, 0, FaceCorner.BOTTOM_RIGHT),
-    BOTTOM_RIGHT_BR(FaceSide.BOTTOM.ordinalBit | FaceSide.RIGHT.ordinalBit, FaceCorner.BOTTOM_RIGHT.ordinalBit),
+    BOTTOM_RIGHT_NO_CORNER(FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0, FaceCorner.BOTTOM_RIGHT),
+    BOTTOM_RIGHT_BR(FaceEdge.BOTTOM.ordinalBit | FaceEdge.RIGHT.ordinalBit, FaceCorner.BOTTOM_RIGHT.ordinalBit),
 
-    ALL_NO_CORNERS(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit, 0,
+    ALL_NO_CORNERS(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit, 0,
             FaceCorner.TOP_LEFT, FaceCorner.TOP_RIGHT, FaceCorner.BOTTOM_LEFT, FaceCorner.BOTTOM_RIGHT),
-    ALL_TL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_TR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_RIGHT.ordinalBit),
-    ALL_TL_TR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_TR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.TOP_RIGHT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit),
-    ALL_TL_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_TR_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TR_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit),
-    ALL_TL_TR_BL(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_TR_BL(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit),
-    ALL_TL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_TR_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TR_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit),
-    ALL_TL_TR_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_TR_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_BL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_BL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.BOTTOM_LEFT.ordinalBit),
-    ALL_TL_BL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_BL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_LEFT.ordinalBit),
-    ALL_TR_BL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TR_BL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit),
-    ALL_TL_TR_BL_BR(FaceSide.TOP.ordinalBit | FaceSide.BOTTOM.ordinalBit | FaceSide.LEFT.ordinalBit | FaceSide.RIGHT.ordinalBit,
+    ALL_TL_TR_BL_BR(FaceEdge.TOP.ordinalBit | FaceEdge.BOTTOM.ordinalBit | FaceEdge.LEFT.ordinalBit | FaceEdge.RIGHT.ordinalBit,
             FaceCorner.BOTTOM_RIGHT.ordinalBit | FaceCorner.BOTTOM_LEFT.ordinalBit | FaceCorner.TOP_RIGHT.ordinalBit
                     | FaceCorner.TOP_LEFT.ordinalBit);
 
@@ -157,7 +157,7 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
         if (join.isJoined(face)) {
             fjs = CornerJoinFaceStateImpl.NO_FACE;
         } else {
-            for (FaceSide fside : FaceSide.values()) {
+            for (FaceEdge fside : FaceEdge.values()) {
                 if (join.isJoined(fside.toWorld(face))) {
                     faceFlags |= fside.ordinalBit;
                 }
@@ -177,7 +177,7 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
         if (tests.result(face)) {
             fjs = CornerJoinFaceStateImpl.NO_FACE;
         } else {
-            for (FaceSide fside : FaceSide.values()) {
+            for (FaceEdge fside : FaceEdge.values()) {
                 Direction joinFace = fside.toWorld(face);
                 if (tests.result(joinFace) && !tests.result(BlockCorner.find(face, joinFace))) {
                     faceFlags |= fside.ordinalBit;
@@ -215,13 +215,13 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
     }
 
     @Override
-    public boolean isJoined(FaceSide side) {
+    public boolean isJoined(FaceEdge side) {
         return (this.bitFlags & side.ordinalBit) == side.ordinalBit;
     }
 
     @Override
     public boolean isJoined(Direction toFace, Direction onFace) {
-        FaceSide side = FaceSide.fromWorld(toFace, onFace);
+        FaceEdge side = FaceEdge.fromWorld(toFace, onFace);
         return side == null ? false : this.isJoined(side);
     }
 
@@ -236,8 +236,8 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
 
     @Override
     public boolean needsCorner(Direction face1, Direction face2, Direction onFace) {
-        FaceSide side1 = FaceSide.fromWorld(face1, onFace);
-        FaceSide side2 = FaceSide.fromWorld(face2, onFace);
+        FaceEdge side1 = FaceEdge.fromWorld(face1, onFace);
+        FaceEdge side2 = FaceEdge.fromWorld(face2, onFace);
         return side1 == null || side2 == null ? false : this.needsCorner(FaceCorner.find(side1, side2));
     }
 }

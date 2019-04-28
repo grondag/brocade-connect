@@ -29,7 +29,7 @@ class CornerJoinBlockStateImpl implements CornerJoinBlockState {
 
     //PERF: values()
     @Override
-    public CornerJoinFaceStateImpl getFaceJoinState(Direction face) {
+    public CornerJoinFaceStateImpl faceJoinState(Direction face) {
         return CornerJoinFaceStateImpl.values()[faceJoinIndex[face.ordinal()]];
     }
 }

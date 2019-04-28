@@ -1,14 +1,14 @@
 package grondag.brocade.connect.api.state;
 
 import grondag.brocade.connect.api.model.FaceCorner;
-import grondag.brocade.connect.api.model.FaceSide;
+import grondag.brocade.connect.api.model.FaceEdge;
 import net.minecraft.util.math.Direction;
 
 public interface CornerJoinFaceState {
 
     int ordinal();
     
-    boolean isJoined(FaceSide side);
+    boolean isJoined(FaceEdge side);
 
     boolean isJoined(Direction toFace, Direction onFace);
 

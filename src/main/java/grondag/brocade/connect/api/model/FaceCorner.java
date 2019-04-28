@@ -7,23 +7,23 @@ import org.apiguardian.api.API;
 
 @API(status = STABLE)
 public enum FaceCorner {
-    TOP_LEFT(FaceSide.LEFT, FaceSide.TOP), TOP_RIGHT(FaceSide.TOP, FaceSide.RIGHT),
-    BOTTOM_LEFT(FaceSide.BOTTOM, FaceSide.LEFT), BOTTOM_RIGHT(FaceSide.RIGHT, FaceSide.BOTTOM);
+    TOP_LEFT(FaceEdge.LEFT, FaceEdge.TOP), TOP_RIGHT(FaceEdge.TOP, FaceEdge.RIGHT),
+    BOTTOM_LEFT(FaceEdge.BOTTOM, FaceEdge.LEFT), BOTTOM_RIGHT(FaceEdge.RIGHT, FaceEdge.BOTTOM);
 
     /**
      * Side that is counterclockwise from the corner.
      */
-    public final FaceSide leftSide;
+    public final FaceEdge leftSide;
 
     /**
      * Side that is clockwise from the corner.
      */
-    public final FaceSide rightSide;
+    public final FaceEdge rightSide;
 
     @API(status = INTERNAL)
     public final int ordinalBit;
 
-    private FaceCorner(FaceSide leftSide, FaceSide rightSide) {
+    private FaceCorner(FaceEdge leftSide, FaceEdge rightSide) {
         this.leftSide = leftSide;
         this.rightSide = rightSide;
         this.ordinalBit = 1 << this.ordinal();
@@ -38,7 +38,7 @@ public enum FaceCorner {
         }
     }
     
-    public static FaceCorner find(FaceSide side1, FaceSide side2) {
+    public static FaceCorner find(FaceEdge side1, FaceEdge side2) {
         return LOOKUP[side1.ordinal()][side2.ordinal()];
     }
 }

@@ -12,7 +12,7 @@ targetCompatibility = 1.8
 def versionInfo = ZoltuGitVersioning.versionInfo
 def autoVersion = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}"
 
-archivesBaseName = "ham_sandwich"
+archivesBaseName = "brocade-connect"
 group = "grondag"
 version = autoVersion
 

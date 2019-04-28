@@ -8,11 +8,11 @@ import net.minecraft.util.math.Direction;
 public interface CornerJoinBlockState {
     int index();
 
-    CornerJoinFaceState getFaceJoinState(Direction face);
+    CornerJoinFaceState faceJoinState(Direction face);
     
     SimpleJoin simpleJoin();
     
-    static int getIndex(BlockNeighbors tests) {
+    static int indexOf(BlockNeighbors tests) {
         return CornerJoinBlockStateSelector.indexOf(tests);
     }
 

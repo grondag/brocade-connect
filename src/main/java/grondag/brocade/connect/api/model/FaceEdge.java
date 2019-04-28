@@ -1,6 +1,13 @@
 package grondag.brocade.connect.api.model;
 
-import static org.apiguardian.api.API.Status.*;
+import static net.minecraft.util.math.Direction.DOWN;
+import static net.minecraft.util.math.Direction.EAST;
+import static net.minecraft.util.math.Direction.NORTH;
+import static net.minecraft.util.math.Direction.SOUTH;
+import static net.minecraft.util.math.Direction.UP;
+import static net.minecraft.util.math.Direction.WEST;
+import static org.apiguardian.api.API.Status.INTERNAL;
+import static org.apiguardian.api.API.Status.STABLE;
 
 import javax.annotation.Nullable;
 
@@ -9,30 +16,24 @@ import org.apiguardian.api.API;
 import net.minecraft.util.math.Direction;
 
 @API(status = STABLE)
-public enum FaceSide {
-    TOP(Direction.SOUTH, Direction.SOUTH, Direction.UP, Direction.UP, Direction.UP, Direction.UP),
-    BOTTOM(Direction.NORTH, Direction.NORTH, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN),
-    LEFT(Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH, Direction.EAST, Direction.WEST),
-    RIGHT(Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+public enum FaceEdge {
+    TOP(SOUTH, SOUTH, UP, UP, UP, UP),
+    BOTTOM(NORTH, NORTH, DOWN, DOWN, DOWN, DOWN),
+    LEFT(EAST, WEST, SOUTH, NORTH, EAST, WEST),
+    RIGHT(WEST, EAST, NORTH, SOUTH, WEST, EAST);
 
     // for a given face, which face is at the position identified by this enum?
-    private final Direction RELATIVE_LOOKUP[] = new Direction[6];
+    private final Direction relativeLookup[];
 
-    private FaceSide(Direction up, Direction down, Direction east, Direction west, Direction north, Direction south) {
-        RELATIVE_LOOKUP[Direction.UP.ordinal()] = up;
-        RELATIVE_LOOKUP[Direction.DOWN.ordinal()] = down;
-        RELATIVE_LOOKUP[Direction.EAST.ordinal()] = east;
-        RELATIVE_LOOKUP[Direction.WEST.ordinal()] = west;
-        RELATIVE_LOOKUP[Direction.NORTH.ordinal()] = north;
-        RELATIVE_LOOKUP[Direction.SOUTH.ordinal()] = south;
-
+    private FaceEdge(Direction... relativeLookup) {
+        this.relativeLookup = relativeLookup;
         this.ordinalBit = 1 << this.ordinal();
     }
 
     @API(status = INTERNAL)
     public final int ordinalBit;
 
-    public FaceSide clockwise() {
+    public FaceEdge clockwise() {
         switch (this) {
         case BOTTOM:
             return LEFT;
@@ -47,7 +48,7 @@ public enum FaceSide {
         }
     }
 
-    public FaceSide counterClockwise() {
+    public FaceEdge counterClockwise() {
         switch (this) {
         case BOTTOM:
             return RIGHT;
@@ -66,25 +67,25 @@ public enum FaceSide {
      * Returns the block face next to this FaceSide on the given block face.
      */
     public Direction toWorld(Direction face) {
-        return RELATIVE_LOOKUP[face.ordinal()];
+        return relativeLookup[face.ordinal()];
     }
     
-    private static final FaceSide[] VALUES = FaceSide.values();
+    private static final FaceEdge[] VALUES = FaceEdge.values();
     
     public static final int COUNT = VALUES.length;
-    public static final FaceSide fromOrdinal(int ordinal) {
+    public static final FaceEdge fromOrdinal(int ordinal) {
         return VALUES[ordinal];
     }
     
     // find the side for a given face orthogonal to a face
-    private final static FaceSide FACE_LOOKUP[][] = new FaceSide[6][6];
+    private final static FaceEdge FACE_LOOKUP[][] = new FaceEdge[6][6];
 
     static {
         for (Direction onFace : Direction.values()) {
             for (Direction sideFace : Direction.values()) {
-                FaceSide match = null;
+                FaceEdge match = null;
 
-                for (FaceSide side : FaceSide.values()) {
+                for (FaceEdge side : FaceEdge.values()) {
                     if (side.toWorld(onFace) == sideFace) {
                         match = side;
                     }
@@ -100,7 +101,7 @@ public enum FaceSide {
      * return null;
      */
     @Nullable
-    public static FaceSide fromWorld(Direction sideFace, Direction onFace) {
+    public static FaceEdge fromWorld(Direction sideFace, Direction onFace) {
         return FACE_LOOKUP[onFace.ordinal()][sideFace.ordinal()];
     }
 }

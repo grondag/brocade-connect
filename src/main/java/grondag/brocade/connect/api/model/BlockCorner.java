@@ -1,9 +1,9 @@
 package grondag.brocade.connect.api.model;
 
-import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_180;
-import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_270;
-import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_90;
-import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_NONE;
+import static grondag.brocade.connect.api.model.ClockwiseRotation.ROTATE_180;
+import static grondag.brocade.connect.api.model.ClockwiseRotation.ROTATE_270;
+import static grondag.brocade.connect.api.model.ClockwiseRotation.ROTATE_90;
+import static grondag.brocade.connect.api.model.ClockwiseRotation.ROTATE_NONE;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
@@ -43,7 +43,7 @@ public enum BlockCorner {
      * the orthogonal axis such that face1 and face2 are most occluded. Based on
      * "default" model having Y axis and occluding north and east faces.
      */
-    public final FaceRotation modelRotation;
+    public final ClockwiseRotation rotation;
 
     @API(status = INTERNAL)
     public final int ordinalBit;
@@ -71,14 +71,14 @@ public enum BlockCorner {
         for (BlockCorner corner : BlockCorner.values()) {
             CORNER_LOOKUP[corner.face1.ordinal()][corner.face2.ordinal()] = corner;
             CORNER_LOOKUP[corner.face2.ordinal()][corner.face1.ordinal()] = corner;
-            MODEL_LOOKUP[corner.orthogonalAxis.ordinal()][corner.modelRotation.ordinal()] = corner;
+            MODEL_LOOKUP[corner.orthogonalAxis.ordinal()][corner.rotation.ordinal()] = corner;
         }
     }
 
-    private BlockCorner(Direction face1, Direction face2, FaceRotation modelRotation) {
+    private BlockCorner(Direction face1, Direction face2, ClockwiseRotation modelRotation) {
         this.face1 = face1;
         this.face2 = face2;
-        this.modelRotation = modelRotation;
+        this.rotation = modelRotation;
         this.ordinalBit = 1 << (6 + this.ordinal());
         this.superOrdinal = 6 + this.ordinal();
         boolean hasX = (face1.getAxis() == Direction.Axis.X || face2.getAxis() == Direction.Axis.X);
@@ -99,7 +99,7 @@ public enum BlockCorner {
         return BlockCorner.CORNER_LOOKUP[face1.ordinal()][face2.ordinal()];
     }
 
-    public static BlockCorner find(Direction.Axis axis, FaceRotation modelRotation) {
-        return BlockCorner.MODEL_LOOKUP[axis.ordinal()][modelRotation.ordinal()];
+    public static BlockCorner find(Direction.Axis axis, ClockwiseRotation rotation) {
+        return BlockCorner.MODEL_LOOKUP[axis.ordinal()][rotation.ordinal()];
     }
 }
