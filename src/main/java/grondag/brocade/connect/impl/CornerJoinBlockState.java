@@ -1,6 +1,5 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.state.CornerJoinFaceState;
 import grondag.brocade.connect.api.state.CornerJoinState;
 import net.minecraft.util.math.Direction;
 
@@ -18,16 +17,16 @@ public class CornerJoinBlockState implements CornerJoinState {
     }
 
     @Override
-    public int getIndex() {
+    public int index() {
         return index;
     }
 
-    void setFaceJoinState(Direction face, CornerJoinFaceState state) {
+    void setFaceJoinState(Direction face, CornerJoinFaceStateImpl state) {
         faceJoinIndex[face.ordinal()] = (byte) state.ordinal();
     }
     //PERF: values()
     @Override
-    public CornerJoinFaceState getFaceJoinState(Direction face) {
-        return CornerJoinFaceState.values()[faceJoinIndex[face.ordinal()]];
+    public CornerJoinFaceStateImpl getFaceJoinState(Direction face) {
+        return CornerJoinFaceStateImpl.values()[faceJoinIndex[face.ordinal()]];
     }
 }

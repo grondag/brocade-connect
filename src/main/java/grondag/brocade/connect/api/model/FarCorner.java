@@ -1,6 +1,5 @@
 package grondag.brocade.connect.api.model;
 
-import grondag.brocade.connect.impl.NeighborBlocksImpl;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
@@ -41,7 +40,7 @@ public enum FarCorner {
         this.face1 = face1;
         this.face2 = face2;
         this.face3 = face3;
-        this.bitFlag = 1 << (NeighborBlocksImpl.FACE_FLAGS.length + BlockCorner.values().length + this.ordinal());
+        this.bitFlag = 1 << (6 + BlockCorner.values().length + this.ordinal());
         // 6 is number of possible faces
         this.superOrdinal = this.ordinal() + 6 + BlockCorner.values().length;
 

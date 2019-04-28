@@ -1,5 +1,6 @@
 package grondag.brocade.connect.impl;
 
+import grondag.brocade.connect.api.block.NeighborBlocks;
 import net.minecraft.util.math.Direction;
 
 public class CornerJoinBlockStateSelector {
@@ -13,7 +14,7 @@ public class CornerJoinBlockStateSelector {
         int firstIndex = 0;
 
         for (int i = 0; i < 64; i++) {
-            SimpleJoin baseJoin = new SimpleJoin(i);
+            SimpleJoin baseJoin = SimpleJoin.get(i);
             BLOCK_JOIN_SELECTOR[i] = new CornerJoinBlockStateSelector(baseJoin, firstIndex);
 
             for (int j = 0; j < BLOCK_JOIN_SELECTOR[i].getStateCount(); j++) {
@@ -24,12 +25,16 @@ public class CornerJoinBlockStateSelector {
         }
     }
 
-    public static <V> int findIndex(NeighborBlocksImpl<V>.NeighborTestResults tests) {
-        SimpleJoin baseJoin = new SimpleJoin(tests);
+    public static int getIndex(NeighborBlocks tests) {
+        SimpleJoin baseJoin = SimpleJoin.get(tests);
         return BLOCK_JOIN_SELECTOR[baseJoin.getIndex()].getIndexFromNeighbors(tests);
     }
 
-    public static CornerJoinBlockState getJoinState(int index) {
+    public static CornerJoinBlockState get(NeighborBlocks tests) {
+        return get(getIndex(tests));
+    }
+    
+    public static CornerJoinBlockState get(int index) {
         return BLOCK_JOIN_STATES[index];
     }
 
@@ -56,7 +61,7 @@ public class CornerJoinBlockStateSelector {
         return count;
     }
 
-    private <V> int getIndexFromNeighbors(NeighborBlocksImpl<V>.NeighborTestResults tests) {
+    private <V> int getIndexFromNeighbors(NeighborBlocks tests) {
         int index = 0;
         int shift = 1;
         for (int i = 0; i < 6; i++) {

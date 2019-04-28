@@ -4,14 +4,10 @@ import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.FarCorner;
 import grondag.brocade.connect.api.model.HorizontalCorner;
 import grondag.brocade.connect.api.model.HorizontalFace;
-import grondag.brocade.connect.impl.NeighborBlocksImpl;
-import grondag.brocade.connect.impl.NeighborBlocksImpl.NeighborTestResults;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.Direction;
 
-public interface NeighborBlocks<V> {
-
-    int[] FACE_FLAGS = { 1, 2, 4, 8, 16, 32 };
+public interface NeighborBlocks {
 
     //////////////////////////////
     // BLOCK STATE
@@ -38,36 +34,74 @@ public interface NeighborBlocks<V> {
 
     BlockState getBlockState(FarCorner corner);
 
-    V getModelState(Direction face);
+    Object getModelState(Direction face);
 
-    V getModelState(HorizontalFace face);
+    Object getModelState(HorizontalFace face);
 
-    V getModelStateUp(HorizontalFace face);
+    Object getModelStateUp(HorizontalFace face);
 
-    V getModelStateDown(HorizontalFace face);
+    Object getModelStateDown(HorizontalFace face);
 
-    V getModelState(Direction face1, Direction face2);
+    Object getModelState(Direction face1, Direction face2);
 
-    V getModelState(HorizontalCorner corner);
+    Object getModelState(HorizontalCorner corner);
 
-    V getModelStateUp(HorizontalCorner corner);
+    Object getModelStateUp(HorizontalCorner corner);
 
-    V getModelStateDown(HorizontalCorner corner);
+    Object getModelStateDown(HorizontalCorner corner);
 
-    V getModelState(BlockCorner corner);
+    Object getModelState(BlockCorner corner);
 
-    V getModelState(Direction face1, Direction face2, Direction face3);
+    Object getModelState(Direction face1, Direction face2, Direction face3);
 
-    V getModelState(FarCorner corner);
+    Object getModelState(FarCorner corner);
+
+    boolean result(Direction face);
+
+    /** use this to override world results */
+    void override(Direction face, boolean override);
 
     /**
-     * Apply given test to neighboring block states.
+     * Convenience for {@link #result(BlockCorner)}
      */
-    NeighborTestResults getNeighborTestResults(BlockTest<V> test);
+    public default boolean result(Direction face1, Direction face2) {
+        BlockCorner corner = BlockCorner.find(face1, face2);
+        return result(corner);
+    }
+    
+    public default boolean result(HorizontalFace face) {
+        return result(face.face);
+    }
+
+    public default boolean resultUp(HorizontalFace face) {
+        return result(face.face, Direction.UP);
+    }
+
+    public default boolean resultDown(HorizontalFace face) {
+        return result(face.face, Direction.DOWN);
+    }
+    
+    public default boolean result(HorizontalCorner corner) {
+        return result(corner.face1.face, corner.face2.face);
+    }
 
     /**
-     * For testing
+     * Convenience for {@link #result(FarCorner)}
      */
-    NeighborTestResults getFakeNeighborTestResults(int faceFlags);
+    public default boolean result(Direction face1, Direction face2, Direction face3) {
+        FarCorner corner = FarCorner.find(face1, face2, face3);
+        return result(corner);
+    }
+    
+    public default boolean resultUp(HorizontalCorner corner) {
+        return result(corner.face1.face, corner.face2.face, Direction.UP);
+    }
 
+    public default boolean resultDown(HorizontalCorner corner) {
+        return result(corner.face1.face, corner.face2.face, Direction.DOWN);
+    }
+
+    boolean result(BlockCorner corner);
+
+    boolean result(FarCorner corner);
 }

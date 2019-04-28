@@ -1,6 +1,9 @@
 package grondag.brocade.connect.api.model;
 
-import static grondag.brocade.connect.api.model.FaceRotation.*;
+import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_180;
+import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_270;
+import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_90;
+import static grondag.brocade.connect.api.model.FaceRotation.ROTATE_NONE;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
@@ -8,7 +11,6 @@ import javax.annotation.Nullable;
 
 import org.apiguardian.api.API;
 
-import grondag.brocade.connect.impl.NeighborBlocksImpl;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3i;
@@ -77,7 +79,7 @@ public enum BlockCorner {
         this.face1 = face1;
         this.face2 = face2;
         this.modelRotation = modelRotation;
-        this.ordinalBit = 1 << (NeighborBlocksImpl.FACE_FLAGS.length + this.ordinal());
+        this.ordinalBit = 1 << (6 + this.ordinal());
         this.superOrdinal = 6 + this.ordinal();
         boolean hasX = (face1.getAxis() == Direction.Axis.X || face2.getAxis() == Direction.Axis.X);
         boolean hasY = (face1.getAxis() == Direction.Axis.Y || face2.getAxis() == Direction.Axis.Y);
