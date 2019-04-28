@@ -109,17 +109,10 @@ public class NeighborBlocksImpl implements BlockNeighbors {
         release(this);
     }
     
-    @Override
-    public NeighborBlocksImpl withTest(BlockTest blockTest) {
-        this.blockTest = blockTest;
-        completionFlags = 0;
-        resultFlags = 0;
-        return this;
-    }
-    
     //////////////////////////////
     // BLOCK STATE
     //////////////////////////////
+    
     @Override
     public BlockState blockState(Direction face) {
         BlockState result = blockStates[face.ordinal()];
@@ -233,6 +226,14 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     //////////////////////////
     // TESTS
     //////////////////////////
+    
+    @Override
+    public NeighborBlocksImpl withTest(BlockTest blockTest) {
+        this.blockTest = blockTest;
+        completionFlags = 0;
+        resultFlags = 0;
+        return this;
+    }
     
     private boolean doTest(Direction face) {
         if (stateFunc == null) {
