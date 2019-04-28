@@ -9,11 +9,12 @@ class CornerJoinBlockStateImpl implements CornerJoinBlockState {
     /** join state considering only direct neighbors */
     public final SimpleJoin simpleJoin;
 
-    private byte faceJoinIndex[] = new byte[6];
+    private final byte[] faceJoinIndex;
 
-    CornerJoinBlockStateImpl(int index, SimpleJoin simpleJoin) {
+    CornerJoinBlockStateImpl(int index, SimpleJoin simpleJoin, byte[] faceJoinIndex) {
         this.index = index;
         this.simpleJoin = simpleJoin;
+        this.faceJoinIndex = faceJoinIndex;
     }
 
     @Override
@@ -26,11 +27,6 @@ class CornerJoinBlockStateImpl implements CornerJoinBlockState {
         return index;
     }
 
-    //TODO: remove
-    void setFaceJoinState(Direction face, CornerJoinFaceStateImpl state) {
-        faceJoinIndex[face.ordinal()] = (byte) state.ordinal();
-    }
-    
     //PERF: values()
     @Override
     public CornerJoinFaceStateImpl getFaceJoinState(Direction face) {

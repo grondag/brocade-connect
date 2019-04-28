@@ -13,7 +13,7 @@ public interface CornerJoinBlockState {
     SimpleJoin simpleJoin();
     
     static int getIndex(BlockNeighbors tests) {
-        return CornerJoinBlockStateSelector.getIndex(tests);
+        return CornerJoinBlockStateSelector.indexOf(tests);
     }
 
     static CornerJoinBlockState get(BlockNeighbors tests) {
