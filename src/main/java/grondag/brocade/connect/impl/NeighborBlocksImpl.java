@@ -2,11 +2,12 @@ package grondag.brocade.connect.impl;
 
 import grondag.brocade.connect.api.block.BlockTest;
 import grondag.brocade.connect.api.block.ModelStateFunction;
-import grondag.brocade.connect.api.block.NeighborBlocks;
+
+import java.util.concurrent.ArrayBlockingQueue;
+
+import grondag.brocade.connect.api.block.BlockNeighbors;
 import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.FarCorner;
-import grondag.brocade.connect.api.model.HorizontalCorner;
-import grondag.brocade.connect.api.model.HorizontalFace;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -18,20 +19,40 @@ import net.minecraft.world.BlockView;
  * position. Position is immutable, blockstates are looked up lazily and values
  * are cached for reuse.
  */
-public class NeighborBlocksImpl implements NeighborBlocks {
+public class NeighborBlocksImpl implements BlockNeighbors {
     private static final int STATE_COUNT = 6 + 12 + 8;
     private static final BlockState EMPTY_BLOCK_STATE[] = new BlockState[STATE_COUNT];
     private static final Object EMPTY_MODEL_STATE[] = new Object[STATE_COUNT];
     
     private static ThreadLocal<NeighborBlocksImpl> THREADLOCAL = ThreadLocal.withInitial(NeighborBlocksImpl::new);
     
-    public static NeighborBlocks threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
+    public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
         return THREADLOCAL.get().prepare(world, x, y, z, stateFunc, blockTest);
+    }
+    
+    private static final ArrayBlockingQueue<NeighborBlocksImpl> POOL = new ArrayBlockingQueue<>(64);
+    
+    public static NeighborBlocksImpl claim(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
+        NeighborBlocksImpl result = POOL.poll();
+        if (result == null) {
+            result = new NeighborBlocksImpl();
+        }
+        result.allowReclaim = true;
+        return result.prepare(world, x, y, z, stateFunc, blockTest);
+    }
+    
+    private static void release(NeighborBlocksImpl instance) {
+        if(instance.allowReclaim) {
+            instance.allowReclaim = false;
+            POOL.offer(instance);
+        }
     }
     
     private final BlockState blockStates[] = new BlockState[STATE_COUNT];
     private final Object modelStates[] = new Object[STATE_COUNT];
     private final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+    
+    private boolean allowReclaim = false;
     
     private int completionFlags = 0;
     private int resultFlags = 0;
@@ -64,7 +85,12 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
     
     @Override
-    public NeighborBlocksImpl test(BlockTest blockTest) {
+    public void release() {
+        release(this);
+    }
+    
+    @Override
+    public NeighborBlocksImpl withTest(BlockTest blockTest) {
         this.blockTest = blockTest;
         completionFlags = 0;
         resultFlags = 0;
@@ -75,7 +101,7 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     // BLOCK STATE
     //////////////////////////////
     @Override
-    public BlockState getBlockState(Direction face) {
+    public BlockState blockState(Direction face) {
         BlockState result = blockStates[face.ordinal()];
         if (result == null) {
             final Vec3i vec = face.getVector();
@@ -86,43 +112,7 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
 
     @Override
-    public BlockState getBlockState(HorizontalFace face) {
-        return getBlockState(face.face);
-    }
-
-    @Override
-    public BlockState getBlockStateUp(HorizontalFace face) {
-        return getBlockState(face.face, Direction.UP);
-    }
-
-    @Override
-    public BlockState getBlockStateDown(HorizontalFace face) {
-        return getBlockState(face.face, Direction.DOWN);
-    }
-
-    @Override
-    public BlockState getBlockState(Direction face1, Direction face2) {
-        BlockCorner corner = BlockCorner.find(face1, face2);
-        return getBlockState(corner);
-    }
-
-    @Override
-    public BlockState getBlockState(HorizontalCorner corner) {
-        return getBlockState(corner.face1.face, corner.face2.face);
-    }
-
-    @Override
-    public BlockState getBlockStateUp(HorizontalCorner corner) {
-        return getBlockState(corner.face1.face, corner.face2.face, Direction.UP);
-    }
-
-    @Override
-    public BlockState getBlockStateDown(HorizontalCorner corner) {
-        return getBlockState(corner.face1.face, corner.face2.face, Direction.DOWN);
-    }
-    
-    @Override
-    public BlockState getBlockState() {
+    public BlockState blockState() {
         BlockState result = this.testBlockState;
         if (result == null) {
             result = world.getBlockState(mutablePos.set(x, y, z));
@@ -132,7 +122,7 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
 
     @Override
-    public BlockState getBlockState(BlockCorner corner) {
+    public BlockState blockState(BlockCorner corner) {
         BlockState result = blockStates[corner.superOrdinal];
         if (result == null) {
             final Vec3i vec = corner.directionVector;
@@ -143,13 +133,7 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
 
     @Override
-    public BlockState getBlockState(Direction face1, Direction face2, Direction face3) {
-        FarCorner corner = FarCorner.find(face1, face2, face3);
-        return getBlockState(corner);
-    }
-
-    @Override
-    public BlockState getBlockState(FarCorner corner) {
+    public BlockState blockState(FarCorner corner) {
         BlockState result = blockStates[corner.superOrdinal];
         if (result == null) {
             final Vec3i vec = corner.directionVector;
@@ -164,13 +148,13 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     //////////////////////////////
 
     @Override
-    public Object getModelState() {
+    public Object modelState() {
         if(this.stateFunc == null) 
             return null;
         
         Object result = this.testModelState;
         if (result == null) {
-            BlockState state = this.getBlockState();
+            BlockState state = this.blockState();
             mutablePos.set(x, y, z);
             result = this.stateFunc.get(this.world, state, mutablePos);
             this.testModelState = result;
@@ -179,13 +163,13 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
     
     @Override
-    public Object getModelState(Direction face) {
+    public Object modelState(Direction face) {
         if(this.stateFunc == null) 
             return null;
         
         Object result = modelStates[face.ordinal()];
         if (result == null) {
-            BlockState state = this.getBlockState(face);
+            BlockState state = this.blockState(face);
             final Vec3i vec = face.getVector();
             mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ());
             result = this.stateFunc.get(this.world, state, mutablePos);
@@ -195,49 +179,13 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
 
     @Override
-    public Object getModelState(HorizontalFace face) {
-        return getModelState(face.face);
-    }
-
-    @Override
-    public Object getModelStateUp(HorizontalFace face) {
-        return getModelState(face.face, Direction.UP);
-    }
-
-    @Override
-    public Object getModelStateDown(HorizontalFace face) {
-        return getModelState(face.face, Direction.DOWN);
-    }
-
-    @Override
-    public Object getModelState(Direction face1, Direction face2) {
-        BlockCorner corner = BlockCorner.find(face1, face2);
-        return getModelState(corner);
-    }
-
-    @Override
-    public Object getModelState(HorizontalCorner corner) {
-        return getModelState(corner.face1.face, corner.face2.face);
-    }
-
-    @Override
-    public Object getModelStateUp(HorizontalCorner corner) {
-        return getModelState(corner.face1.face, corner.face2.face, Direction.UP);
-    }
-
-    @Override
-    public Object getModelStateDown(HorizontalCorner corner) {
-        return getModelState(corner.face1.face, corner.face2.face, Direction.DOWN);
-    }
-
-    @Override
-    public Object getModelState(BlockCorner corner) {
+    public Object modelState(BlockCorner corner) {
         if(this.stateFunc == null) 
             return null;
         
         Object result = modelStates[corner.superOrdinal];
         if (result == null) {
-            BlockState state = this.getBlockState(corner);
+            BlockState state = blockState(corner);
             final Vec3i vec = corner.directionVector;
             mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ());
             result = this.stateFunc.get(this.world, state, mutablePos);
@@ -247,19 +195,13 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     }
 
     @Override
-    public Object getModelState(Direction face1, Direction face2, Direction face3) {
-        FarCorner corner = FarCorner.find(face1, face2, face3);
-        return getModelState(corner);
-    }
-
-    @Override
-    public Object getModelState(FarCorner corner) {
+    public Object modelState(FarCorner corner) {
         if(this.stateFunc == null) 
             return null;
         
         Object result = modelStates[corner.superOrdinal];
         if (result == null) {
-            BlockState state = this.getBlockState(corner);
+            BlockState state = blockState(corner);
             final Vec3i vec = corner.directionVector;
             mutablePos.set(x + vec.getX(), y + vec.getY(), z + vec.getZ());
             result = this.stateFunc.get(this.world, state, mutablePos);
@@ -274,25 +216,25 @@ public class NeighborBlocksImpl implements NeighborBlocks {
     
     private boolean doTest(Direction face) {
         if (stateFunc == null) {
-            return this.blockTest.apply(this.getBlockState(), null, getBlockState(face), null);
+            return this.blockTest.apply(this.blockState(), null, blockState(face), null);
         } else {
-            return this.blockTest.apply(this.getBlockState(), this.getModelState(), getBlockState(face), getModelState(face));
+            return this.blockTest.apply(this.blockState(), this.modelState(), blockState(face), modelState(face));
         }
     }
 
     private boolean doTest(BlockCorner corner) {
         if (stateFunc == null) {
-            return this.blockTest.apply(this.getBlockState(), null, getBlockState(corner), null);
+            return this.blockTest.apply(this.blockState(), null, blockState(corner), null);
         } else {
-            return this.blockTest.apply(this.getBlockState(), this.getModelState(), getBlockState(corner), getModelState(corner));
+            return this.blockTest.apply(this.blockState(), this.modelState(), blockState(corner), modelState(corner));
         }
     }
 
     private boolean doTest(FarCorner corner) {
         if (stateFunc == null) {
-            return this.blockTest.apply(this.getBlockState(), null, getBlockState(corner), null);
+            return this.blockTest.apply(this.blockState(), null, blockState(corner), null);
         } else {
-            return this.blockTest.apply(this.getBlockState(), this.getModelState(), getBlockState(corner), getModelState(corner));
+            return this.blockTest.apply(this.blockState(), this.modelState(), blockState(corner), modelState(corner));
         }
     }
     

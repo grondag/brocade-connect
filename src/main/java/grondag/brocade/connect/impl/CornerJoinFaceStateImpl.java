@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.apiguardian.api.API;
 
-import grondag.brocade.connect.api.block.NeighborBlocks;
+import grondag.brocade.connect.api.block.BlockNeighbors;
 import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.FaceCorner;
 import grondag.brocade.connect.api.model.FaceSide;
@@ -168,7 +168,7 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
         return fjs;
     }
 
-    public static CornerJoinFaceStateImpl find(Direction face, NeighborBlocks tests) {
+    public static CornerJoinFaceStateImpl find(Direction face, BlockNeighbors tests) {
         int faceFlags = 0;
         int cornerFlags = 0;
 

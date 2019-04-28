@@ -1,6 +1,6 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.block.NeighborBlocks;
+import grondag.brocade.connect.api.block.BlockNeighbors;
 import net.minecraft.util.math.Direction;
 
 public class CornerJoinFaceSelector {
@@ -20,7 +20,7 @@ public class CornerJoinFaceSelector {
         }
     }
 
-    public <V> int getIndexFromNeighbors(NeighborBlocks tests) {
+    public <V> int getIndexFromNeighbors(BlockNeighbors tests) {
         return joinIndex[CornerJoinFaceStateImpl.find(face, tests).ordinal()];
     }
 

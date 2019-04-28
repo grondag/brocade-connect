@@ -1,6 +1,6 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.block.NeighborBlocks;
+import grondag.brocade.connect.api.block.BlockNeighbors;
 import grondag.brocade.connect.api.state.SimpleJoinState;
 import net.minecraft.util.math.Direction;
 
@@ -25,11 +25,11 @@ public class SimpleJoin implements SimpleJoinState {
         return JOINS[index];
     }
     
-    public static SimpleJoin get(NeighborBlocks testResults) {
+    public static SimpleJoin get(BlockNeighbors testResults) {
         return get(getIndex(testResults));
     }
     
-    public static int getIndex(NeighborBlocks testResults) {
+    public static int getIndex(BlockNeighbors testResults) {
         byte j = 0;
         for (int i = 0; i < 6; i++) {
             if (testResults.result(FACES[i])) {

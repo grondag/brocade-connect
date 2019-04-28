@@ -1,6 +1,6 @@
 package grondag.brocade.connect.impl;
 
-import grondag.brocade.connect.api.block.NeighborBlocks;
+import grondag.brocade.connect.api.block.BlockNeighbors;
 import net.minecraft.util.math.Direction;
 
 public class CornerJoinBlockStateSelector {
@@ -25,12 +25,12 @@ public class CornerJoinBlockStateSelector {
         }
     }
 
-    public static int getIndex(NeighborBlocks tests) {
+    public static int getIndex(BlockNeighbors tests) {
         SimpleJoin baseJoin = SimpleJoin.get(tests);
         return BLOCK_JOIN_SELECTOR[baseJoin.getIndex()].getIndexFromNeighbors(tests);
     }
 
-    public static CornerJoinBlockStateImpl get(NeighborBlocks tests) {
+    public static CornerJoinBlockStateImpl get(BlockNeighbors tests) {
         return get(getIndex(tests));
     }
     
@@ -61,7 +61,7 @@ public class CornerJoinBlockStateSelector {
         return count;
     }
 
-    private <V> int getIndexFromNeighbors(NeighborBlocks tests) {
+    private <V> int getIndexFromNeighbors(BlockNeighbors tests) {
         int index = 0;
         int shift = 1;
         for (int i = 0; i < 6; i++) {
