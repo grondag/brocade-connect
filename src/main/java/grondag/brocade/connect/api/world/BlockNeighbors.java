@@ -25,7 +25,7 @@ import org.apiguardian.api.API;
 import grondag.brocade.connect.api.model.BlockCorner;
 import grondag.brocade.connect.api.model.HorizontalCorner;
 import grondag.brocade.connect.api.model.HorizontalFace;
-import grondag.brocade.connect.impl.NeighborBlocksImpl;
+import grondag.brocade.connect.impl.BlocksNeighborsImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -111,7 +111,7 @@ public interface BlockNeighbors {
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest test) {
-        return NeighborBlocksImpl.threadLocal(world, x, y, z, stateFunc, test);
+        return BlocksNeighborsImpl.threadLocal(world, x, y, z, stateFunc, test);
     }
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc) {

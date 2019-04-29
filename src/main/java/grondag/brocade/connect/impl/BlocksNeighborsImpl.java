@@ -39,29 +39,29 @@ import net.minecraft.world.BlockView;
  * are cached for reuse.
  */
 @API(status = INTERNAL)
-public class NeighborBlocksImpl implements BlockNeighbors {
+public class BlocksNeighborsImpl implements BlockNeighbors {
     private static final int STATE_COUNT = 6 + 12 + 8;
     private static final BlockState EMPTY_BLOCK_STATE[] = new BlockState[STATE_COUNT];
     private static final Object EMPTY_MODEL_STATE[] = new Object[STATE_COUNT];
     
-    private static ThreadLocal<NeighborBlocksImpl> THREADLOCAL = ThreadLocal.withInitial(NeighborBlocksImpl::new);
+    private static ThreadLocal<BlocksNeighborsImpl> THREADLOCAL = ThreadLocal.withInitial(BlocksNeighborsImpl::new);
     
     public static BlockNeighbors threadLocal(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
         return THREADLOCAL.get().prepare(world, x, y, z, stateFunc, blockTest);
     }
     
-    private static final ArrayBlockingQueue<NeighborBlocksImpl> POOL = new ArrayBlockingQueue<>(64);
+    private static final ArrayBlockingQueue<BlocksNeighborsImpl> POOL = new ArrayBlockingQueue<>(64);
     
-    public static NeighborBlocksImpl claim(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
-        NeighborBlocksImpl result = POOL.poll();
+    public static BlocksNeighborsImpl claim(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
+        BlocksNeighborsImpl result = POOL.poll();
         if (result == null) {
-            result = new NeighborBlocksImpl();
+            result = new BlocksNeighborsImpl();
         }
         result.allowReclaim = true;
         return result.prepare(world, x, y, z, stateFunc, blockTest);
     }
     
-    private static void release(NeighborBlocksImpl instance) {
+    private static void release(BlocksNeighborsImpl instance) {
         if(instance.allowReclaim) {
             instance.allowReclaim = false;
             POOL.offer(instance);
@@ -87,10 +87,10 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     private BlockState testBlockState;
     private Object testModelState;
     
-    protected NeighborBlocksImpl () {
+    protected BlocksNeighborsImpl () {
     }
     
-    NeighborBlocksImpl prepare(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
+    BlocksNeighborsImpl prepare(BlockView world, int x, int y, int z, ModelStateFunction stateFunc, BlockTest blockTest) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -228,7 +228,7 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     //////////////////////////
     
     @Override
-    public NeighborBlocksImpl withTest(BlockTest blockTest) {
+    public BlocksNeighborsImpl withTest(BlockTest blockTest) {
         this.blockTest = blockTest;
         completionFlags = 0;
         resultFlags = 0;
@@ -260,7 +260,26 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
     
     @Override
+    public void override(Direction face, boolean override) {
+        if(face == null) {
+            return;
+        }
+        
+        final int bitFlag = 1 << face.ordinal();
+        completionFlags |= bitFlag;
+        if (override) {
+            resultFlags |= bitFlag;
+        } else {
+            resultFlags &= ~bitFlag;
+        }        
+    }
+    
+    @Override
     public boolean result(Direction face) {
+        if(face == null) {
+            return false;
+        }
+        
         int bitFlag = 1 << face.ordinal();
         if ((completionFlags & bitFlag) != bitFlag) {
             if (doTest(face)) {
@@ -272,29 +291,26 @@ public class NeighborBlocksImpl implements BlockNeighbors {
     }
 
     @Override
-    public void override(Direction face, boolean override) {
-        final int bitFlag = 1 << face.ordinal();
-        completionFlags |= bitFlag;
-        if (override) {
-            resultFlags |= bitFlag;
-        } else {
-            resultFlags &= ~bitFlag;
-        }        
-    }
-
-    @Override
-    public boolean result(BlockEdge corner) {
-        if ((completionFlags & corner.superOrdinalBit) != corner.superOrdinalBit) {
-            if (doTest(corner)) {
-                resultFlags |= corner.superOrdinalBit;
-            }
-            completionFlags |= corner.superOrdinalBit;
+    public boolean result(BlockEdge edge) {
+        if(edge == null) {
+            return false;
         }
-        return (resultFlags & corner.superOrdinalBit) == corner.superOrdinalBit;
+        
+        if ((completionFlags & edge.superOrdinalBit) != edge.superOrdinalBit) {
+            if (doTest(edge)) {
+                resultFlags |= edge.superOrdinalBit;
+            }
+            completionFlags |= edge.superOrdinalBit;
+        }
+        return (resultFlags & edge.superOrdinalBit) == edge.superOrdinalBit;
     }
 
     @Override
     public boolean result(BlockCorner corner) {
+        if(corner == null) {
+            return false;
+        }
+        
         if ((completionFlags & corner.superOrdinalBit) != corner.superOrdinalBit) {
             if (doTest(corner)) {
                 resultFlags |= corner.superOrdinalBit;

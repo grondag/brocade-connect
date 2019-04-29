@@ -88,7 +88,7 @@ public enum BlockEdge {
         this.face2 = face2;
         this.rotation = rotation;
         superOrdinal = 6 + this.ordinal();
-        superOrdinalBit = superOrdinal;
+        superOrdinalBit = 1 << superOrdinal;
         boolean hasX = (face1.getAxis() == Direction.Axis.X || face2.getAxis() == Direction.Axis.X);
         boolean hasY = (face1.getAxis() == Direction.Axis.Y || face2.getAxis() == Direction.Axis.Y);
         parallelAxis = hasX && hasY ? Direction.Axis.Z : hasX ? Direction.Axis.Y : Direction.Axis.X;

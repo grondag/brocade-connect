@@ -38,8 +38,8 @@ import net.minecraft.util.math.Direction;
 public enum FaceEdge {
     TOP_EDGE(SOUTH, SOUTH, UP, UP, UP, UP),
     BOTTOM_EDGE(NORTH, NORTH, DOWN, DOWN, DOWN, DOWN),
-    LEFT_EDGE(EAST, WEST, SOUTH, NORTH, EAST, WEST),
-    RIGHT_EDGE(WEST, EAST, NORTH, SOUTH, WEST, EAST);
+    LEFT_EDGE(WEST, EAST, EAST, WEST, NORTH, SOUTH),
+    RIGHT_EDGE(EAST, WEST, WEST, EAST, SOUTH, NORTH);
 
     // for a given face, which face is at the position identified by this enum?
     private final Direction relativeLookup[];
