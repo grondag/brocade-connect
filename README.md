@@ -12,7 +12,7 @@ The library functions are relative to a central block and the 26 neighbor blocks
 
 4) Low- or no-allocation operation via threadLocal and pooled instances. 
 
-## Devlopment Environment
+## Development Environment
 
 ```
 repositories {
