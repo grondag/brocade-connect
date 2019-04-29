@@ -9,10 +9,11 @@
   ],
   "contact": {
     "homepage": "https://github.com/grondag/brocade-connect",
+    "issues": "https://github.com/grondag/brocade-connect/issues",
     "sources": "https://github.com/grondag/brocade-connect"
   },
   "license": "Apache-2.0",
-  "icon": "assets/brocade-connect/brocade-connect_icon.png",
+  "icon": "assets/brocade/brocade-connect_icon.png",
   
   "environment": "*",
   "entrypoints": {
