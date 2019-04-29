@@ -34,6 +34,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3i;
 
+/**
+ * Defines the twelve edges of a block and the relative position of
+ * neighboring blocks diagonally adjacent to those edges.
+ */
 @API(status = STABLE)
 public enum BlockEdge {
     UP_EAST(Direction.UP, Direction.EAST, ROTATE_NONE), // Z AXIS
@@ -60,7 +64,7 @@ public enum BlockEdge {
 
     /**
      * Used to position models like stairs/wedges. Representation rotation around
-     * the orthogonal axis such that face1 and face2 are most occluded. Based on
+     * the parallel axis such that face1 and face2 are most occluded. Based on
      * "default" model having Y axis and occluding north and east faces.
      */
     public final ClockwiseRotation rotation;
@@ -78,10 +82,10 @@ public enum BlockEdge {
     public final int superOrdinalBit;
 
     /**
-     * Will be null if not a horizontal corner.
+     * Will be null if not a horizontal edge.
      */
     @Nullable
-    public final HorizontalCorner horizontalCorner;
+    public final HorizontalEdge horizontalEdge;
     
     private BlockEdge(Direction face1, Direction face2, ClockwiseRotation rotation) {
         this.face1 = face1;
@@ -98,13 +102,16 @@ public enum BlockEdge {
         vector = new Vec3i(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
 
         if (face1.getAxis() == Axis.Y || face2.getAxis() == Axis.Y)
-            horizontalCorner = null;
+            horizontalEdge = null;
         else
-            horizontalCorner = HorizontalCorner.find(HorizontalFace.find(face1), HorizontalFace.find(face2));
+            horizontalEdge = HorizontalEdge.find(HorizontalFace.find(face1), HorizontalFace.find(face2));
     }
 
     public static final int COUNT = BlockEdgeHelper.COUNT;
     
+    /**
+     * Will be null if the inputs do not specify an edge.
+     */
     @Nullable
     public static BlockEdge find(Direction face1, Direction face2) {
         return BlockEdgeHelper.find(face1, face2);

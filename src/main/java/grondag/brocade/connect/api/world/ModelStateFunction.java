@@ -25,7 +25,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
 /**
- * Used to implement visitor pattern for block-state dependent conditional logic.
+ * Provide an instance to {@link BlockNeighbors} when it is retrieved
+ * in order to retrieve values with lazy evaluation and caching. The
+ * resulting values will also be provided to {@link BlockTest}.
  */
 @API(status = STABLE)
 @FunctionalInterface

@@ -22,35 +22,35 @@ import java.util.function.Consumer;
 
 import org.apiguardian.api.API;
 
-import grondag.brocade.connect.api.model.HorizontalCorner;
+import grondag.brocade.connect.api.model.HorizontalEdge;
 import grondag.brocade.connect.api.model.HorizontalFace;
 
 @API(status = INTERNAL)
 public abstract class HorizontalCornerHelper {
     private HorizontalCornerHelper() {}
     
-    private static final HorizontalCorner[] VALUES = HorizontalCorner.values();
+    private static final HorizontalEdge[] VALUES = HorizontalEdge.values();
     public static final int COUNT = VALUES.length;
 
-    private static final HorizontalCorner[][] HORIZONTAL_CORNER_LOOKUP = new HorizontalCorner[4][4];
+    private static final HorizontalEdge[][] HORIZONTAL_CORNER_LOOKUP = new HorizontalEdge[4][4];
 
     static {
-        for (HorizontalCorner corner : HorizontalCorner.values()) {
+        for (HorizontalEdge corner : HorizontalEdge.values()) {
             HORIZONTAL_CORNER_LOOKUP[corner.face1.ordinal()][corner.face2.ordinal()] = corner;
             HORIZONTAL_CORNER_LOOKUP[corner.face2.ordinal()][corner.face1.ordinal()] = corner;
         }
     }
     
-    public static HorizontalCorner find(HorizontalFace face1, HorizontalFace face2) {
+    public static HorizontalEdge find(HorizontalFace face1, HorizontalFace face2) {
         return HORIZONTAL_CORNER_LOOKUP[face1.ordinal()][face2.ordinal()];
     }
     
-    public static HorizontalCorner fromOrdinal(int ordinal) {
+    public static HorizontalEdge fromOrdinal(int ordinal) {
         return VALUES[ordinal];
     }
     
-    public static void forEach(Consumer<HorizontalCorner> consumer) {
-        for(HorizontalCorner val: VALUES) {
+    public static void forEach(Consumer<HorizontalEdge> consumer) {
+        for(HorizontalEdge val: VALUES) {
             consumer.accept(val);
         }
     }

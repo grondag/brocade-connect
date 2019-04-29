@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "ham_sandwich",
+  "id": "brocade-connect",
   "version": "${version}",
-  "name": "Ham Sandwich v1",
+  "name": "Brocade Connect",
   "description": "Connected block library for use by other mods",
   "authors": [
     "Grondag"
   ],
   "contact": {
-    "homepage": "https://github.com/grondag/ham_sandwich",
-    "sources": "https://github.com/grondag/ham_sandwich"
+    "homepage": "https://github.com/grondag/brocade-connect",
+    "sources": "https://github.com/grondag/brocade-connect"
   },
   "license": "Apache-2.0",
-  "icon": "assets/ham_sandwich/ham_sandwich_icon.png",
+  "icon": "assets/brocade-connect/brocade-connect_icon.png",
   
   "environment": "*",
   "entrypoints": {

@@ -21,12 +21,18 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import org.apiguardian.api.API;
 
 import grondag.brocade.connect.impl.helper.BlockCornerHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+/**
+ * Defines the eight corners of a block and the relative positions of 
+ * the neighboring blocks diagonally adjacent to those corners.
+ */
 @API(status = STABLE)
 public enum BlockCorner {
     UP_NORTH_EAST(Direction.UP, Direction.EAST, Direction.NORTH),
@@ -71,6 +77,10 @@ public enum BlockCorner {
     
     public static final int COUNT = BlockCornerHelper.COUNT;
     
+    /**
+     * Will return null if the given inputs do not specify a corner.
+     */
+    @Nullable
     public static BlockCorner find(Direction face1, Direction face2, Direction face3) {
         return BlockCornerHelper.find(face1, face2, face3);
     }

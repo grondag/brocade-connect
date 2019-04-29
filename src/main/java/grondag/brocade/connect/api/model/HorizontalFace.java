@@ -20,12 +20,17 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import org.apiguardian.api.API;
 
 import grondag.brocade.connect.impl.helper.HorizontalFaceHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+/**
+ * A subset of {@link Direction}, includes only the face in the horizontal plane.
+ */
 @API(status = STABLE)
 public enum HorizontalFace {
     NORTH(Direction.NORTH),
@@ -60,6 +65,10 @@ public enum HorizontalFace {
     
     public static final int COUNT = HorizontalFaceHelper.COUNT;
 
+    /**
+     * Will return null if input is not a horizontal face.
+     */
+    @Nullable
     public static HorizontalFace find(Direction face) {
         return HorizontalFaceHelper.find(face);
     }

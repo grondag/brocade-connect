@@ -30,6 +30,7 @@ import grondag.brocade.connect.api.model.FaceCorner;
 import grondag.brocade.connect.api.model.FaceEdge;
 import grondag.brocade.connect.api.state.CornerJoinFaceState;
 import grondag.brocade.connect.api.world.BlockNeighbors;
+import grondag.brocade.connect.impl.helper.FaceEdgeHelper;
 import net.minecraft.util.math.Direction;
 
 /**
@@ -218,7 +219,8 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
         if (join.isJoined(face)) {
             fjs = CornerJoinFaceStateImpl.NO_FACE;
         } else {
-            for (FaceEdge fside : FaceEdge.values()) {
+            for (int i = 0; i < FaceEdgeHelper.COUNT; i++) {
+                final FaceEdge fside = FaceEdgeHelper.fromOrdinal(i);
                 if (join.isJoined(fside.toWorld(face))) {
                     faceFlags |= fside.ordinalBit;
                 }
@@ -238,8 +240,9 @@ public enum CornerJoinFaceStateImpl implements CornerJoinFaceState {
         if (tests.result(face)) {
             fjs = CornerJoinFaceStateImpl.NO_FACE;
         } else {
-            for (FaceEdge fside : FaceEdge.values()) {
-                Direction joinFace = fside.toWorld(face);
+            for (int i = 0; i < FaceEdgeHelper.COUNT; i++) {
+                final FaceEdge fside = FaceEdgeHelper.fromOrdinal(i);
+                final Direction joinFace = fside.toWorld(face);
                 if (tests.result(joinFace) && !tests.result(BlockEdge.find(face, joinFace))) {
                     faceFlags |= fside.ordinalBit;
                 }

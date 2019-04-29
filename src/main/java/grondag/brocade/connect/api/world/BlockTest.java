@@ -24,6 +24,18 @@ import org.apiguardian.api.API;
 
 import net.minecraft.block.BlockState;
 
+/**
+ * Implement to define when a block neighbor should be considered "present and matching" for purposes
+ * of computing a join state.  Can also be used for more general purposes to retrieve values with
+ * caching and lazy evaluation via {@link BlockNeighbors#result(grondag.brocade.connect.api.model.BlockCorner)}
+ * and its variance. <p>
+ * 
+ * The "from" values will always be derived from the central block. The "to" values will represent
+ * a neighboring block.  All inputs benefit from the lazy evaluation and caching provided by {@link BlockNeighbors}.<p>
+ * 
+ * The model state values will be non-null if {@link BlockNeighbors} was given a state function when it
+ * was retrieved. (And if the function returns a non-null value.)  See {@link ModelStateFunction}
+ */
 @API(status = STABLE)
 @FunctionalInterface
 public interface BlockTest {

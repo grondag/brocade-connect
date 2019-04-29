@@ -33,12 +33,12 @@ public enum FaceCorner {
     BOTTOM_RIGHT(FaceEdge.RIGHT_EDGE, FaceEdge.BOTTOM_EDGE);
 
     /**
-     * Side that is counterclockwise from the corner.
+     * Face edge that is counterclockwise from this block corner.
      */
     public final FaceEdge leftSide;
 
     /**
-     * Side that is clockwise from the corner.
+     * Face edge that is clockwise from this block corner.
      */
     public final FaceEdge rightSide;
 

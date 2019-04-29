@@ -20,13 +20,18 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import org.apiguardian.api.API;
 
 import grondag.brocade.connect.impl.helper.HorizontalCornerHelper;
 import net.minecraft.util.math.Vec3i;
 
+/**
+ * A subset of {@link BlockEdge}, includes only the edges in the horizontal plane.
+ */
 @API(status = STABLE)
-public enum HorizontalCorner {
+public enum HorizontalEdge {
     NORTH_EAST(HorizontalFace.NORTH, HorizontalFace.EAST), 
     NORTH_WEST(HorizontalFace.NORTH, HorizontalFace.WEST),
     SOUTH_EAST(HorizontalFace.SOUTH, HorizontalFace.EAST), 
@@ -37,7 +42,7 @@ public enum HorizontalCorner {
 
     public final Vec3i vector;
 
-    private HorizontalCorner(HorizontalFace face1, HorizontalFace face2) {
+    private HorizontalEdge(HorizontalFace face1, HorizontalFace face2) {
         this.face1 = face1;
         this.face2 = face2;
         this.vector = new Vec3i(face1.face.getVector().getX() + face2.face.getVector().getX(), 0,
@@ -46,15 +51,19 @@ public enum HorizontalCorner {
 
     public static final int COUNT = HorizontalCornerHelper.COUNT;
     
-    public static HorizontalCorner find(HorizontalFace face1, HorizontalFace face2) {
+    /**
+     * Will return null if inputs do not specify a horizontal block edge.
+     */
+    @Nullable
+    public static HorizontalEdge find(HorizontalFace face1, HorizontalFace face2) {
         return HorizontalCornerHelper.find(face1, face2);
     }
     
-    public static HorizontalCorner fromOrdinal(int ordinal) {
+    public static HorizontalEdge fromOrdinal(int ordinal) {
         return HorizontalCornerHelper.fromOrdinal(ordinal);
     }
     
-    public static void forEach(Consumer<HorizontalCorner> consumer) {
+    public static void forEach(Consumer<HorizontalEdge> consumer) {
         HorizontalCornerHelper.forEach(consumer);
     }
 }

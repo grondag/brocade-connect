@@ -24,6 +24,13 @@ import org.apiguardian.api.API;
 
 import grondag.brocade.connect.impl.CornerJoinFaceStateImpl;
 
+/**
+ * Identifies all of the possible face state within a corner join.
+ * All of these states must be textures/transformed to correctly render the face.<p>
+ * 
+ * The actual texturing/transformation is not part of this library 
+ * because it can vary greatly depending on use case, texture layout, etc.
+ */
 @API(status = STABLE)
 public abstract class CornerJoinFaceStates {
     private CornerJoinFaceStates() {};

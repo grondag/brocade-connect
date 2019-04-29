@@ -24,6 +24,10 @@ import grondag.brocade.connect.api.world.BlockNeighbors;
 import grondag.brocade.connect.impl.SimpleJoinStateImpl;
 import net.minecraft.util.math.Direction;
 
+/**
+ * Describes the state of a block model with connected textures/shapes that
+ * depend on only on six directly adjacent neighbors.<p>
+ */
 @API(status = STABLE)
 public interface SimpleJoinState {
 

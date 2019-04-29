@@ -24,12 +24,22 @@ import grondag.brocade.connect.api.world.BlockNeighbors;
 import grondag.brocade.connect.impl.CornerJoinStateSelector;
 import net.minecraft.util.math.Direction;
 
+/**
+ * Describes the state of a block model with connected textures/shapes that
+ * depend on the presence or absence of corner neighbors. (For a total of 26.)<p>
+ * 
+ * A corner join state is a super set of and will always be consistent with
+ * the {@link #simpleJoin()} state given the same block neighbors / test.<p>
+ */
 @API(status = STABLE)
 public interface CornerJoinState {
     int ordinal();
 
     CornerJoinFaceState faceState(Direction face);
     
+    /**
+     * Access to underlying simple 6-sides join.
+     */
     SimpleJoinState simpleJoin();
     
     static int ordinalFromWorld(BlockNeighbors tests) {
