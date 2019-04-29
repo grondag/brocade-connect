@@ -41,7 +41,7 @@ dependencies {
 Obtaining the state needed for a connected-texture model is straightforward.  If the connection depends only on block state, the test function is simply this:
 
 ```java
-    static final BlockTest MATCHER = (a, b, c, d) -> a != null && a.equals(c);
+    static final BlockTest MATCHER = (b0, m0, b1, m1) -> b0 != null && b0.equals(b1);
 ```
 
 Retrieving the connection state is then done with a single call:
