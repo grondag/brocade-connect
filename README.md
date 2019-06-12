@@ -1,5 +1,7 @@
 # Brocade Connections
 
+## This is now a [sub-project of Brocade](https://github.com/grondag/brocade/tree/master/brocade-connect).  This repo will eventually be archived.
+
 This is a library for Minecraft mods using the Fabric toolchain.  It is meant to be distributed as a nested jar and introduces no additional dependencies.
 
 The library functions are relative to a central block and the 26 neighbor blocks immediately adjacent to it. For the "block neighborhood" the library offers:
